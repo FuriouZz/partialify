@@ -13,8 +13,19 @@ function isValidFile (file, opts) {
   });
 }
 
-function partialify (file, opts) {
+function mergeExtensions(extensions) {
+  Array.prototype.push.apply(types, extensions);
+  types = types.filter(function(elem, pos) {
+    return types.indexOf(elem) == pos;
+  });
+}
 
+function partialify (file, opts) {
+  
+  if (opts.extensions && Array.isArray(opts.extensions._)) {
+    mergeExtensions(opts.extensions._);
+  }
+  
   if (!isValidFile(file, opts)) return through();
 
   var buffer = "";
